@@ -1,7 +1,7 @@
 package contaBancaria.controller;
 
-import contaBancaria.controllers.helpers.ResponseContaBancaria;
 import contaBancaria.entities.Usuario;
+import contaBancaria.controllers.helpers.ResponseContaBancaria;
 import contaBancaria.exception.ParametroInvalidoException;
 import contaBancaria.service.UsuarioService;
 import org.slf4j.Logger;

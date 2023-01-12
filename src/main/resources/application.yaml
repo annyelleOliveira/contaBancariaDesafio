@@ -1,0 +1,17 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration
+
+cloud:
+  aws:
+    region:
+      static: us-east-1
+      auto: false
+    credentials:
+      access-key: AKIAQTNGFBQXBW5IUN45
+      secret-key: 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
+    end-point:
+      uri: https://sqs.us-east-1.amazonaws.com/041687518254/movimentacoes_conta

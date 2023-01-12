@@ -1,7 +1,7 @@
 package contaBancaria.controller;
 
-import contaBancaria.controllers.helpers.ResponseContaBancaria;
 import contaBancaria.entities.Agencia;
+import contaBancaria.controllers.helpers.ResponseContaBancaria;
 import contaBancaria.service.AgenciaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

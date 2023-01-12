@@ -31,4 +31,6 @@ public class Usuario {
     @OneToMany(mappedBy = "titular", fetch = FetchType.EAGER)
     private List<Conta> contas;
 
+    public Usuario(String cpf, String nomeTitular, LocalDate dataNascimento) {
+    }
 }

@@ -1,9 +1,9 @@
 package contaBancaria.controller;
 
+import contaBancaria.service.MovimentoService;
 import contaBancaria.controllers.helpers.ResponseContaBancaria;
 import contaBancaria.entities.Movimento;
 import contaBancaria.entities.dto.MovimentoDTO;
-import contaBancaria.service.MovimentoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -8,6 +8,9 @@ import contaBancaria.exception.ConsultaContaException;
 import contaBancaria.exception.ParametroInvalidoException;
 import contaBancaria.exception.UsuarioNotFoundException;
 import contaBancaria.repository.MovimentoRepository;
+import contaBancaria.utils.Consumer;
+import contaBancaria.entities.ConteudoNotificacao;
+import contaBancaria.utils.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,12 @@ public class MovimentoService {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    Consumer consumer;
+
+    @Autowired
+    Publisher publisher;
+
     public Movimento create(MovimentoDTO request) throws Exception {
         Movimento movimento = new Movimento();
         validaCamposMovimento(request);
@@ -45,6 +54,7 @@ public class MovimentoService {
         movimento.setTipoMovimento(request.getTipoMovimento());
         contaService.atualizaSaldo(request);
         movimento.setSaldoAtual(contaService.consultarSaldo(request.getNumeroConta()));
+        conteudoNotificacao(movimento);
         return movimentoRepository.save(movimento);
 
     }
@@ -96,4 +106,15 @@ public class MovimentoService {
     public List<Movimento> extratoDetalhadoMovimentacoes(Conta idConta) {
         return movimentoRepository.findByIdConta(idConta);
     }
+
+    public ConteudoNotificacao conteudoNotificacao(Movimento request){
+        LOG.info("Contruindo conteudo de SQS");
+        ConteudoNotificacao conteudoNotificacao = new ConteudoNotificacao();
+        conteudoNotificacao.setAgencia(request.getIdConta().getAgencia().getNumeroAgencia());
+        conteudoNotificacao.setNumero_conta(request.getIdConta().getNumeroConta());
+        conteudoNotificacao.setDigito_conta(request.getIdConta().getDigitoConta());
+        conteudoNotificacao.setValor_movimento(request.getValorMovimentacao());
+        return conteudoNotificacao;
+    }
+
 }

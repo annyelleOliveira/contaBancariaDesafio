@@ -1,6 +1,5 @@
 package contaBancaria.entities.dto;
 
-import contaBancaria.entities.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

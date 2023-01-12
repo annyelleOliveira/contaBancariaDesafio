@@ -1,11 +1,11 @@
 package contaBancaria.controller;
 
+import contaBancaria.entities.Movimento;
+import contaBancaria.service.ContaService;
 import contaBancaria.controllers.helpers.ResponseContaBancaria;
 import contaBancaria.entities.Conta;
-import contaBancaria.entities.Movimento;
 import contaBancaria.entities.dto.ContaDTO;
 import contaBancaria.exception.ConsultaContaException;
-import contaBancaria.service.ContaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
