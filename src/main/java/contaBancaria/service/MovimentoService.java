@@ -8,9 +8,8 @@ import contaBancaria.exception.ConsultaContaException;
 import contaBancaria.exception.ParametroInvalidoException;
 import contaBancaria.exception.UsuarioNotFoundException;
 import contaBancaria.repository.MovimentoRepository;
-import contaBancaria.utils.Consumer;
-import contaBancaria.entities.ConteudoNotificacao;
 import contaBancaria.utils.Publisher;
+import contaBancaria.utils.SNSConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +36,13 @@ public class MovimentoService {
     private UsuarioService usuarioService;
 
     @Autowired
-    Consumer consumer;
+    private NotificacaoService notificacaoService;
 
     @Autowired
-    Publisher publisher;
+    private SNSConfig snsConfig;
+
+    @Autowired
+    private Publisher publisher;
 
     public Movimento create(MovimentoDTO request) throws Exception {
         Movimento movimento = new Movimento();
@@ -54,8 +56,11 @@ public class MovimentoService {
         movimento.setTipoMovimento(request.getTipoMovimento());
         contaService.atualizaSaldo(request);
         movimento.setSaldoAtual(contaService.consultarSaldo(request.getNumeroConta()));
-        conteudoNotificacao(movimento);
-        return movimentoRepository.save(movimento);
+
+        Movimento movimentosalvo = movimentoRepository.save(movimento);
+        notificacaoService.conteudoNotificacao();
+        verificaSaldoAtual(contaService.consultarSaldo(request.getNumeroConta()));
+        return movimentosalvo;
 
     }
 
@@ -107,14 +112,9 @@ public class MovimentoService {
         return movimentoRepository.findByIdConta(idConta);
     }
 
-    public ConteudoNotificacao conteudoNotificacao(Movimento request){
-        LOG.info("Contruindo conteudo de SQS");
-        ConteudoNotificacao conteudoNotificacao = new ConteudoNotificacao();
-        conteudoNotificacao.setAgencia(request.getIdConta().getAgencia().getNumeroAgencia());
-        conteudoNotificacao.setNumero_conta(request.getIdConta().getNumeroConta());
-        conteudoNotificacao.setDigito_conta(request.getIdConta().getDigitoConta());
-        conteudoNotificacao.setValor_movimento(request.getValorMovimentacao());
-        return conteudoNotificacao;
+    private void verificaSaldoAtual(BigDecimal saldoAtual) {
+        if (saldoAtual.compareTo(BigDecimal.ZERO) < 0) {
+            snsConfig.amazonSNSAsync();
+        }
     }
-
 }

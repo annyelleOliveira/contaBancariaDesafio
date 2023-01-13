@@ -1,8 +1,6 @@
 package contaBancaria.utils;
 
-import contaBancaria.entities.ConteudoNotificacao;
-import contaBancaria.entities.Movimento;
-import contaBancaria.service.MovimentoService;
+import contaBancaria.service.NotificacaoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,12 +18,12 @@ public class Publisher {
     private String endpoint;
 
     @Autowired
-    MovimentoService movimentoService;
+    NotificacaoService notificacaoService;
 
-    @Scheduled(fixedRate = 20)
-    public void scheduleFixedRateTask(){
+    @Scheduled(fixedRate = 1000)
+    public void scheduleFixedRateTask() {
         log.info("Enviando mensagem para SQS");
-        queueMessagingTemplate.convertAndSend(endpoint, new Movimento());
+        queueMessagingTemplate.convertAndSend(endpoint, notificacaoService.conteudoNotificacao());
     }
 
 }

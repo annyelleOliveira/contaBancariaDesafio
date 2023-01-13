@@ -2,18 +2,19 @@ package contaBancaria.utils;
 
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
-import com.amazonaws.services.sns.model.SubscribeRequest;
-import com.amazonaws.services.sns.model.SubscribeResult;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 
 public class SNSClient {
 
+    @Value("AKIAQTNGFBQXBW5IUN45")
+    private String accessKey;
+
+    @Value("Kx3/AZw9n68YpRxKRiJExiydeu0mlxqowEt/1MkM")
+    private String secretKey;
     @Autowired
-    AmazonSNS snsClient = AmazonSNSClientBuilder.defaultClient();
-    String topicArn = snsClient.createTopic("notifica-utilizacao-limite").getTopicArn();
-    SubscribeResult subscribeRequest = snsClient.subscribe(new SubscribeRequest(topicArn, "email", "aannyoliveira@gmail.com"));
+    AmazonSNS amazonSNS = AmazonSNSClientBuilder.defaultClient();
+    String topicArn = amazonSNS.createTopic("notifica-utilizacao-limite").getTopicArn();
+
 }

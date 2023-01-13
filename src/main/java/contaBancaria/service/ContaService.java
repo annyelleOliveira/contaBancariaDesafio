@@ -1,20 +1,16 @@
 package contaBancaria.service;
 
-import com.amazonaws.services.sns.AmazonSNS;
-import com.amazonaws.services.sns.model.SubscribeRequest;
 import contaBancaria.entities.Agencia;
 import contaBancaria.entities.Conta;
 import contaBancaria.entities.Movimento;
 import contaBancaria.entities.Usuario;
 import contaBancaria.entities.dto.ContaDTO;
 import contaBancaria.entities.dto.MovimentoDTO;
-import contaBancaria.exception.AwsException;
 import contaBancaria.exception.ConsultaContaException;
 import contaBancaria.exception.ParametroInvalidoException;
 import contaBancaria.exception.UsuarioNotFoundException;
 import contaBancaria.repository.ContaRepository;
 import contaBancaria.repository.MovimentoRepository;
-import contaBancaria.utils.NotificacaoRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +36,6 @@ public class ContaService {
     UsuarioService usuarioService;
     @Autowired
     AgenciaService agenciaService;
-
-    @Autowired
-    private AmazonSNS snsClient;
 
     @Autowired
     private MovimentoService movimentoService;
@@ -179,14 +172,14 @@ public class ContaService {
 //            notificacaoSNS(request);
 //        }
 //    }
-
-    public void notificacaoSNS(NotificacaoRequest request) throws AwsException {
-        if (snsClient.createTopic(request.getTopic()) == null) {
-            throw new AwsException("Tópico informado inválido.");
-        }
-
-        for (String destinatario : request.getDestinatarios()) {
-            snsClient.subscribe(new SubscribeRequest(request.getTopic(), "email", destinatario));
-        }
-    }
+//
+//    public void notificacaoSNS(NotificacaoRequest request) throws AwsException {
+//        if (snsClient.createTopic(request.getTopic()) == null) {
+//            throw new AwsException("Tópico informado inválido.");
+//        }
+//
+//        for (String destinatario : request.getDestinatarios()) {
+//            snsClient.subscribe(new SubscribeRequest(request.getTopic(), "email", destinatario));
+//        }
+//    }
 }

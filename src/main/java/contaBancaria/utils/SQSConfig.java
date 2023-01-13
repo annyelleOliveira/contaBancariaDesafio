@@ -15,25 +15,25 @@ import org.springframework.context.annotation.Primary;
 public class SQSConfig {
 
 
-        @Value("us-east-1")
-        private String region;
+    @Value(value = "us-east-1")
+    private String region;
 
-        @Value("AKIAQTNGFBQXBW5IUN45")
-        private String accessKey;
+    @Value(value = "AKIAQTNGFBQXBW5IUN45")
+    private String accessKey;
 
-        @Value("Kx3/AZw9n68YpRxKRiJExiydeu0mlxqowEt/1MkM")
-        private String secretKey;
+    @Value(value = "Kx3/AZw9n68YpRxKRiJExiydeu0mlxqowEt/1MkM")
+    private String secretKey;
 
-        @Bean
-        public QueueMessagingTemplate queueMessagingTemplate() {
-            return new QueueMessagingTemplate(amazonSQSAsync());
-        }
+    @Bean
+    public QueueMessagingTemplate queueMessagingTemplate() {
+        return new QueueMessagingTemplate(amazonSQSAsync());
+    }
 
-        @Bean
-        @Primary
-        public AmazonSQSAsync amazonSQSAsync() {
-            return AmazonSQSAsyncClientBuilder.standard().withRegion(Regions.US_EAST_1)
-                    .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
-                    .build();
-        }
+    @Bean
+    @Primary
+    public AmazonSQSAsync amazonSQSAsync() {
+        return AmazonSQSAsyncClientBuilder.standard().withRegion(Regions.US_EAST_1)
+                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
+                .build();
+    }
 }

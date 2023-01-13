@@ -21,6 +21,6 @@ public class Agencia {
     private String localAgencia;
 
     @Column
-    private int numeroAgencia;
+    private Integer numeroAgencia;
 
 }

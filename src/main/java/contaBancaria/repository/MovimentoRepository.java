@@ -14,5 +14,7 @@ public interface MovimentoRepository extends JpaRepository<Movimento, Long> {
     @Query("SELECT m FROM Movimento m WHERE m.idConta=:idConta")
     List<Movimento> findByIdConta(Conta idConta);
 
+    Movimento findFirstByOrderByIdDesc();
+
 
 }
